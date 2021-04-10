@@ -66,7 +66,7 @@ cv2.waitKey(0)
 # Erosion için döküman;
 # https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_morphological_ops/py_morphological_ops.html
 
-# In[7]:
+# In[5]:
 
 
 #Erosion filtering
@@ -87,17 +87,55 @@ cv2.imshow('Closing', closing)
 cv2.waitKey(0)
 
 
+# In[7]:
+
+
+cv2.destroyAllWindows()
+
+
 # Filling Holes hakkında döküman;
 # https://learnopencv.com/filling-holes-in-an-image-using-opencv-python-c/#:~:text=There%20is%20no%20imfill%20function,pixel%20(0%2C%200).
-
-# In[ ]:
-
-
-#Filling holes
-
 
 # In[6]:
 
 
+#Filling holes
+#update the name of image
+img=erosion
+
+# Copy the image.
+img_floodfill = img.copy()
+
+# Mask used to flood filling.
+# Notice the size needs to be 2 pixels than the image.
+h, w = img.shape[:2]
+mask = np.zeros((h+2, w+2), np.uint8)
+
+# Floodfill from point (0, 0)
+cv2.floodFill(img_floodfill, mask, (0,0), 255);
+
+# Invert floodfilled image
+img_floodfill_inv = cv2.bitwise_not(img_floodfill)
+
+# Combine the two images to get the foreground.
+img_out = img | img_floodfill_inv
+
+
+# Display images.
+cv2.imshow("Floodfilled Image", img_floodfill)
+cv2.imshow("Inverted Floodfilled Image", img_floodfill_inv)
+cv2.imshow("Foreground", img_out)
+cv2.waitKey(0)
+
+
+# In[8]:
+
+
 cv2.destroyAllWindows()
+
+
+# In[ ]:
+
+
+
 
