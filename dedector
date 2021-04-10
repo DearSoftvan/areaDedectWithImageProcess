@@ -1,0 +1,103 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
+import cv2
+import numpy as np
+
+#Take input from file system 
+img = cv2.imread("xxx.png")
+#printing the image
+cv2.imshow('The Image', img)
+cv2.waitKey(0)
+
+
+# In[2]:
+
+
+#convert the color space rgb to grayscale
+img_gray=cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+#printing the grayscale image
+cv2.imshow('The Grayscale Image', img_gray)
+cv2.waitKey(0)
+
+
+# In[3]:
+
+
+#close the off the output windows
+cv2.destroyAllWindows()
+
+
+# Binary Thresholding için döküman;
+# https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_thresholding/py_thresholding.html
+
+# #define variables
+# thresh=127
+# max=255
+# thresholding
+# ret,thresh= cv2.threshold(img_gray,127,255,cv2.THRESH_BINARY)
+# 
+# printing the threshed image
+# cv2.imshow('The Threshed Image', thresh)
+# cv2.waitKey(0)
+
+# In[4]:
+
+
+img = cv2.medianBlur(img_gray,5)
+
+ret,th1 = cv2.threshold(img_gray,127,255,cv2.THRESH_BINARY)
+th2 = cv2.adaptiveThreshold(img_gray,255,cv2.ADAPTIVE_THRESH_MEAN_C,            cv2.THRESH_BINARY,11,2)
+th3 = cv2.adaptiveThreshold(img_gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,            cv2.THRESH_BINARY,11,2)
+
+cv2.imshow('The Threshed Image ', th1)
+cv2.waitKey(0)
+
+cv2.imshow('ADAPTIVE_THRESH_MEAN_C', th2)
+cv2.waitKey(0)
+
+cv2.imshow('ADAPTIVE_THRESH_GAUSSIAN_C', th3)
+cv2.waitKey(0)
+
+
+# Erosion için döküman;
+# https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_morphological_ops/py_morphological_ops.html
+
+# In[7]:
+
+
+#Erosion filtering
+kernel = np.ones((5,5),np.uint8)
+erosion = cv2.erode(th3,kernel,iterations = 1)
+#Printing output images
+cv2.imshow('Erosion', erosion)
+cv2.waitKey(0)
+
+#Opening
+opening = cv2.morphologyEx(th3, cv2.MORPH_OPEN, kernel)
+cv2.imshow('Opening', opening)
+cv2.waitKey(0)
+
+#CLosing
+closing = cv2.morphologyEx(th3, cv2.MORPH_CLOSE, kernel)
+cv2.imshow('Closing', closing)
+cv2.waitKey(0)
+
+
+# Filling Holes hakkında döküman;
+# https://learnopencv.com/filling-holes-in-an-image-using-opencv-python-c/#:~:text=There%20is%20no%20imfill%20function,pixel%20(0%2C%200).
+
+# In[ ]:
+
+
+#Filling holes
+
+
+# In[6]:
+
+
+cv2.destroyAllWindows()
+
